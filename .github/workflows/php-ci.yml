@@ -1,0 +1,33 @@
+name: PHP CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up PHP
+      uses: shivammathur/setup-php@v2
+      with:
+        php-version: '8.2'
+        extensions: mbstring, xml, curl, zip
+        ini-values: post_max_size=256M, upload_max_filesize=256M
+
+    - name: Validate PHP syntax
+      run: find . -type f -name "*.php" -exec php -l {} \;
+
+    # Optional: Run PHPUnit tests
+    # - name: Run PHPUnit tests
+    #   run: vendor/bin/phpunit
+
+    # Optional: Deploy step
+    # - name: Deploy
+    #   run: echo "Add deployment commands here"
